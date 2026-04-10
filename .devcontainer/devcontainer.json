@@ -1,0 +1,24 @@
+{
+  "name": "Go Dev Container for AWS Downscaler",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.Go",
+        "ms-azuretools.vscode-docker",
+      ],
+      "settings": {
+        "go.useLanguageServer": true,
+        "go.formatTool": "gofmt",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "go mod tidy || true",
+  "mounts": [
+	    "source=${localEnv:HOME}/.aws,target=/home/vscode/.aws,type=bind,readonly"
+	]
+}

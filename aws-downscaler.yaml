@@ -1,0 +1,31 @@
+aws:
+  eu-west-1:
+    ec2:
+      - name: qa-env
+        tags:
+          - name: downscale
+            value: "true"
+          - name: scaledown
+            value: yes
+        downtime: "Mon-Wed 14:00-08:00 UTC   , Wed-Fri 20:00-08:00 UTC"
+        downtime_state: "stop"
+      - name: night-ec2
+        tags:
+          - name: owner
+            value: "milosve"
+        downtime: "Wed-Mon 20:00-08:00 Europe/Belgrade"
+    # rds:
+    #   - name: postgre
+  # region2:
+  #   elastic-cache:
+  #     - name: elasticache-1
+  #     - name: elasticache-2
+  #   ec2:
+  #     - name: ec2-1
+  #       tags: downscale
+  #     - name: ec2-2
+  #       tags: downscale
+  #   rds:
+  #     - name: postgre
+interval: "60s"
+log: "debug"
