@@ -33,7 +33,7 @@ do
         " ./cmd/aws-downscaler
 
     if [ $? -ne 0 ]; then
-        echo 'An error has occurred during 'GOOS=${GOOS} GOARCH=${GOARCH} go build'!'
+        echo "An error has occurred during 'GOOS=${GOOS} GOARCH=${GOARCH} go build' !"
         exit 1
     fi
 
