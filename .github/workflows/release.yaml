@@ -31,9 +31,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
-        driver-opts: |
-          image=ghcr.io/dockerhub-mirror/moby__buildkit:buildx-stable-1-rootless
-          network=host
+        with:
+          driver-opts: |
+            image=ghcr.io/dockerhub-mirror/moby__buildkit:buildx-stable-1-rootless
+            network=host
 
       - name: Set up Docker metadata
         id: meta
