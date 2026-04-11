@@ -30,8 +30,7 @@ jobs:
 
       - name: Build aws-downscaler
         run: |
-          # ./build.sh ${{github.ref_name}}
-          ./build.sh 123test
+          ./build.sh ${{github.ref_name}}
 
       - name: Release
         uses: softprops/action-gh-release@v2
