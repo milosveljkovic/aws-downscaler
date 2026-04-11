@@ -1,11 +1,11 @@
 .PHONY: run test build
 
 run:
-	go run cmd/aws-downscaler/main.go
+	go run -ldflags="-X main.version=dev-$(shell date +%Y-%m-%d-%H:%M:%S)" cmd/aws-downscaler/main.go --help
 
 test:
 	go test -v -timeout 30s ./...
 
-# todo: build multi platform bins
-# build:
-# 	./build.sh
+build:
+	go build -o aws-downscaler ./cmd/aws-downscaler
+# 	./build.sh (multi platform build)

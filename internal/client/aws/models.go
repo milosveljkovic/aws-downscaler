@@ -33,20 +33,17 @@ type DownscalerConfig struct {
 	IntervalSeconds int64
 }
 
-const (
-	AWS_DOWNSCALER_CONFIG_FILE = "aws-downscaler.yaml"
-)
-
-func ReadDownscalerConfig() (DownscalerConfig, error) {
+func ReadDownscalerConfig(configPath string) (DownscalerConfig, error) {
 	var cfg DownscalerConfig
 
-	file, err := os.ReadFile(AWS_DOWNSCALER_CONFIG_FILE)
+	log.Info().Msgf("Reading config file from %s", configPath)
+	file, err := os.ReadFile(configPath)
 	if err != nil {
-		log.Error().Msgf("Can not read config file: %s", AWS_DOWNSCALER_CONFIG_FILE)
+		log.Error().Msgf("Can not read config file: %s", configPath)
 		return DownscalerConfig{}, err
 	}
 	if err := yaml.Unmarshal(file, &cfg); err != nil {
-		log.Error().Msgf("Can not unmarshal config file %s", AWS_DOWNSCALER_CONFIG_FILE)
+		log.Error().Msgf("Can not unmarshal config file %s", configPath)
 		return DownscalerConfig{}, err
 	}
 

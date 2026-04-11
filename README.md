@@ -116,7 +116,7 @@ go build -o aws-downscaler ./cmd/aws-downscaler
 Run the binary:
 
 ```bash
-./aws-downscaler
+./aws-downscaler --help
 ```
 
 ---
