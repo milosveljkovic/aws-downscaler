@@ -1,10 +1,9 @@
-name: Release-test1
+name: Release
 
 on:
-  pull_request:
-  # push:
-  #   tags:
-  #     - 'v*'
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: read
@@ -15,7 +14,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  release-test-1:
+  release-docker:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -43,7 +42,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=pr
+            type=ref,event=tag
             type=sha
 
       - name: Log in to GHCR
