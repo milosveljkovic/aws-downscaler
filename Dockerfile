@@ -11,7 +11,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
   -ldflags="-s -w -X main.version=${VERSION}-${BUILD_DATE}" \
   -o /out/aws-downscaler ./cmd/aws-downscaler
 
