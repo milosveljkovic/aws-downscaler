@@ -12,11 +12,16 @@ RUN go mod download
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
-  -ldflags="-X main.version=${VERSION}-${BUILD_DATE}" \
+  -ldflags="-s -w -X main.version=${VERSION}-${BUILD_DATE}" \
   -o /out/aws-downscaler ./cmd/aws-downscaler
 
 FROM gcr.io/distroless/static-debian12
+
+RUN adduser -D appuser
+USER appuser
+
 WORKDIR /app
 COPY --from=build /out/aws-downscaler /app/aws-downscaler
+
 ENTRYPOINT ["/app/aws-downscaler"]
 CMD ["-config", "/config/aws-downscaler.yaml"]

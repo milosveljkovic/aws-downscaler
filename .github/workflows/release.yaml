@@ -64,3 +64,5 @@ jobs:
           build-args: |
             VERSION=${{ github.ref_name }}
             BUILD_DATE=${{ steps.vars.outputs.build_date }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
