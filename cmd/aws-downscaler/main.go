@@ -15,7 +15,7 @@ import (
 var (
 	configFile string
 	awsProfile string
-	version    = "dev"
+	version    string = "v0.0.0"
 )
 
 const (
