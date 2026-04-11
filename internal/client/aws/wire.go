@@ -3,25 +3,20 @@ package aws
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/rs/zerolog/log"
 )
 
 func InitAWSDownscalers(downscalerConfig DownscalerConfig, profile string) (map[string][]DownscalerI, error) {
 	d := map[string][]DownscalerI{}
-	loadOpts := []func(*config.LoadOptions) error{}
 	for region, services := range downscalerConfig.AwsCloud {
 
-		if isRegionSupported(region) {
+		if !isRegionSupported(region) {
 			log.Warn().Msgf("Region '%s' is not aws region, skip client creation", region)
 			continue
 		}
 		log.Info().Msgf("Generate aws client for %s region", region)
-		if profile != "" {
-			loadOpts = append(loadOpts, config.WithSharedConfigProfile(profile))
-		}
-		cfg, err := LoadAWSConfig(context.Background(), region, "dev")
+		cfg, err := LoadAWSConfig(context.Background(), region, profile)
 		if err != nil {
 			log.Fatal().Err(err)
 		}

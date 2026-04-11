@@ -34,7 +34,7 @@ func (ec2cli Ec2Downscaler) Downscale() {
 		isDowntime, err := util.IsNowInDowntime(ec2Group.Downtime)
 		if err != nil {
 			log.Error().Msg(err.Error())
-			log.Warn().Msgf("Seems like downtime(%s) of ec2 group %s can not be proceeded, skip.", ec2Group.Downtime, ec2Group.Name)
+			log.Warn().Msgf("Seems like downtime(%s) of ec2 group %s can not be proceeded - skip", ec2Group.Downtime, ec2Group.Name)
 			continue
 		}
 		if isDowntime == true {

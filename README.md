@@ -4,9 +4,65 @@ A Go-based tool for scaling AWS EC2 resources up or down based on configuration 
 
 ---
 
+## Usage
+
+### Config example
+
+Define your config.yaml (example in [aws-downscaler.yaml](./aws-downscaler.yaml))
+
+```yaml
+# cloud provider, aws for now, maybe will be extended to support azure/google cloud as well
+aws:
+   # aws region
+   eu-west-1:
+      ec2:
+      # Shutdown EC2 instances during WEEKEND
+         - name: qa-environment
+         tags:
+            # based on tags downscaler scale up/down the ec2 instances
+            # multiple tags supported, ec2 instance has to have all tags from here!
+            - name: downscale
+               value: "true"
+         downtime: "Sat-Sun 00:00-24:00 UTC"
+      # Shutdown EC2 instances during NON WORKING HOURS
+      - name: night-instances
+         tags:
+            - name: downscale
+               value: "true"
+         downtime: "Mon-Sun 20:00-08:00 Europe/Belgrade"
+interval: "60s" # 60s is default and interval have to be >=60s
+log: "info" #can be warn,debug,info,error
+```
+
+Also, it is possible to set multiple downtimes like: `Mon-Wed 20:00-08:00 Europe/Belgrade, Fri-Sat 08:00-20:00 Europe/Belgrade`
+
+---
+
+### Try it as docker
+
+Available docker images available here: [DOCKER-IMAGES](https://github.com/milosveljkovic/aws-downscaler/pkgs/container/aws-downscaler)
+
+```sh
+docker run \
+   -v $(pwd)/aws-downscaler.yaml:/config/aws-downscaler.yaml \
+   -v "$HOME/.aws:/home/appuser/.aws:ro" \
+   ghcr.io/milosveljkovic/aws-downscaler:latest
+
+# OR
+
+docker run \
+   -v $(pwd)/aws-downscaler.yaml:/config/other-config.yaml \
+   -v "$HOME/.aws:/home/appuser/.aws:ro" \
+   ghcr.io/milosveljkovic/aws-downscaler:latest --config /config/other-config.yaml
+```
+
+### Or download from release page
+
+(Release)[https://github.com/milosveljkovic/aws-downscaler/releases]
+
 ## 📦 Project Structure
 
-```
+```txt
 cmd/aws-downscaler/main.go          # Application entrypoint
 aws-downscaler.yaml                 # Configuration file
 ```
