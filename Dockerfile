@@ -17,9 +17,6 @@ RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
 
 FROM gcr.io/distroless/static-debian12
 
-RUN adduser -D appuser
-USER appuser
-
 WORKDIR /app
 COPY --from=build /out/aws-downscaler /app/aws-downscaler
 
