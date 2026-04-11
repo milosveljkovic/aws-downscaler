@@ -1,0 +1,45 @@
+name: Run unti stests
+
+on:
+  pull_request:
+    
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-coverage:
+    name: test-and-coverage
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Run tests with coverage
+        run: |
+          mkdir -p .artifacts
+          go test -v -covermode=atomic -coverprofile=.artifacts/coverage.out ./... | tee .artifacts/test.log
+          go tool cover -func=.artifacts/coverage.out | tee .artifacts/coverage.txt
+
+          TOTAL=$(go tool cover -func=.artifacts/coverage.out | awk '/^total:/ {print $3}')
+          echo "TOTAL_COVERAGE=$TOTAL" >> $GITHUB_ENV
+
+      - name: Add coverage to job summary
+        run: |
+          echo "## Go test results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total coverage:** $TOTAL_COVERAGE" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat .artifacts/coverage.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
