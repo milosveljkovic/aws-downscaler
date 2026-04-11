@@ -37,6 +37,6 @@ do
         exit 1
     fi
 
-    echo "Bin stored in ${OUT_DIR}/${output_name} ..."
+    echo "Binary stored in ${OUT_DIR}/${output_name} ..."
     echo "---"
 done
