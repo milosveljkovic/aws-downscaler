@@ -58,7 +58,7 @@ docker run \
 
 ### Or download from release page
 
-(Release)[https://github.com/milosveljkovic/aws-downscaler/releases]
+Download binaries from [release-page](https://github.com/milosveljkovic/aws-downscaler/releases).
 
 ## 📦 Project Structure
 
