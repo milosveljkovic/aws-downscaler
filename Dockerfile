@@ -1,4 +1,4 @@
-FROM golang:1.24 AS build
+FROM golang:1.24-alpine AS build
 WORKDIR /src
 ARG VERSION=dev
 ARG BUILD_DATE=unknown
