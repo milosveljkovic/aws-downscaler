@@ -1,6 +1,6 @@
 # aws-downscaler
 
-A Go-based tool for scaling AWS EC2 resources up or down based on configuration (tags, schedules, etc.).
+A Go-based tool for scaling AWS resources up or down based on configuration (tags, schedules, etc.).
 
 ---
 
