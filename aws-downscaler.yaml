@@ -13,5 +13,15 @@ aws:
           - name: owner
             value: "milosve"
         downtime: "Wed-Mon 20:00-08:00 Europe/Belgrade"
+    elasticache:
+      - name: qa-env
+        tags:
+          - name: downscale
+            value: "true"
+          - name: scaledown
+            value: yes
+        downtime: "Mon-Wed 14:00-08:00 UTC"
+        uptime_replica_count: 1
+        downtime_replica_count: 0
 interval: "60s"
 log: "debug"
