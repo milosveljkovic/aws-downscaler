@@ -10,7 +10,7 @@ A Go-based tool for scaling AWS resources up or down based on configuration (tag
 
 Define your config.yaml (example in [aws-downscaler.yaml](./aws-downscaler.yaml))
 
-Note: Only ec2 scale-up/down supported!
+Note: Only ec2 & elasticache scale-up/down supported!
 
 ```yaml
 # cloud provider, aws for now, maybe will be extended to support azure/google cloud as well
@@ -27,6 +27,16 @@ aws:
           - name: downscale
             value: 'true'
         downtime: 'Mon-Sun 20:00-08:00 Europe/Belgrade'
+    elasticache:
+      - name: qa-elasticache-cluster
+        tags:
+          - name: name
+            value: "elasticache-qa"
+          - name: scaledown
+            value: yes
+        downtime: "Mon-Wed 20:00-08:00 UTC"
+        uptime_replica_count: 1
+        downtime_replica_count: 0
 interval: 60s
 log: info
 ```
@@ -208,14 +218,11 @@ make build   # Build binary
 
 - Always authenticate with AWS before running/debugging
 - `AWS_PROFILE` must be set (e.g. `dev`)
-- Use `AWS_EC2_METADATA_DISABLED=true` inside containers to avoid hangs
-- Ensure your `config.yaml` is in the project root
 
 ---
 
 ## 🚀 Future Improvements
 
-- Cli flags to have more control over the app
 - Dry-run mode for safe testing
 - Metrics/logging integration
 - Support for other AWS services

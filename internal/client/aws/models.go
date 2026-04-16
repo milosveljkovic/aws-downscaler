@@ -15,15 +15,18 @@ type AwsTags struct {
 }
 
 type AWSResource struct {
-	Name          string    `yaml:"name,omitempty"`
-	Arn           string    `yaml:"arn,omitempty"`
-	Tags          []AwsTags `yaml:"tags"`
-	Downtime      string    `yaml:"downtime,omitempty"`
-	DowntimeState string    `yaml:"downtime_state"`
+	Name                 string    `yaml:"name,omitempty"`
+	Arn                  string    `yaml:"arn,omitempty"`
+	Tags                 []AwsTags `yaml:"tags"`
+	Downtime             string    `yaml:"downtime,omitempty"`
+	DowntimeState        string    `yaml:"downtime_state"`
+	UptimeReplicaCount   string    `yaml:"uptime_replica_count,omitempty"`
+	DowntimeReplicaCount string    `yaml:"downtime_replica_count,omitempty"`
 }
 
 type RegionConfig struct {
-	EC2 []AWSResource `yaml:"ec2"`
+	EC2         []AWSResource `yaml:"ec2"`
+	Elasticache []AWSResource `yaml:"elasticache"`
 }
 
 type DownscalerConfig struct {

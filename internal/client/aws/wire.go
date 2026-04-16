@@ -22,11 +22,19 @@ func InitAWSDownscalers(downscalerConfig DownscalerConfig, profile string) (map[
 		}
 		if len(services.EC2) > 0 {
 			log.Info().Msg("Detected EC2 services in config ...")
-			cli, err := NewEc2Downscaler(*cfg, services.EC2)
+			ec2DownscalerCli, err := NewEc2Downscaler(*cfg, services.EC2)
 			if err != nil {
 				log.Fatal().Err(err)
 			}
-			d[region] = append(d[region], cli)
+			d[region] = append(d[region], ec2DownscalerCli)
+		}
+		if len(services.Elasticache) > 0 {
+			log.Info().Msg("Detected Elasticache services in config ...")
+			elasticacheDownscalerCli, err := NewElasticacheDownscaler(*cfg, services.Elasticache)
+			if err != nil {
+				log.Fatal().Err(err)
+			}
+			d[region] = append(d[region], elasticacheDownscalerCli)
 		}
 	}
 	return d, nil
