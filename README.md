@@ -45,7 +45,7 @@ tags:
 
 - Set one or many downtimes separated by `,` character.
 
-For instance, during working days scale down instances between 20:00 and 08:00 and during weekend keep them off.
+For example: During working days scale down instances between 20:00 and 08:00 and during weekend keep them off.
 
 ```yaml
 downtime: 'Mon-Fri 20:00-08:00 Europe/Belgrade, Sat-Sun 00:00-24:00 Europe/Belgrade'
