@@ -10,31 +10,48 @@ A Go-based tool for scaling AWS EC2 resources up or down based on configuration 
 
 Define your config.yaml (example in [aws-downscaler.yaml](./aws-downscaler.yaml))
 
+Note: Only ec2 scale-up/down supported!
+
 ```yaml
 # cloud provider, aws for now, maybe will be extended to support azure/google cloud as well
 aws:
-   # aws region
-   eu-west-1:
-      ec2:
-      # Shutdown EC2 instances during WEEKEND
-         - name: qa-environment
-         tags:
-            # based on tags downscaler scale up/down the ec2 instances
-            # multiple tags supported, ec2 instance has to have all tags from here!
-            - name: downscale
-               value: "true"
-         downtime: "Sat-Sun 00:00-24:00 UTC"
-      # Shutdown EC2 instances during NON WORKING HOURS
+  eu-west-1:
+    ec2:
+      - name: qa-environment
+        tags:
+          - name: downscale
+            value: 'true'
+        downtime: 'Sat-Sun 00:00-24:00 UTC'
       - name: night-instances
-         tags:
-            - name: downscale
-               value: "true"
-         downtime: "Mon-Sun 20:00-08:00 Europe/Belgrade"
-interval: "60s" # 60s is default and interval have to be >=60s
-log: "info" #can be warn,debug,info,error
+        tags:
+          - name: downscale
+            value: 'true'
+        downtime: 'Mon-Sun 20:00-08:00 Europe/Belgrade'
+interval: 60s
+log: info
 ```
 
-Also, it is possible to set multiple downtimes like: `Mon-Wed 20:00-08:00 Europe/Belgrade, Fri-Sat 08:00-20:00 Europe/Belgrade`
+Based on the config your aws-downscaler will perform scale-up/down of your aws services (ec2 supported only for now).
+
+- Use tags to filter ec2 instances you want to scale-up/down:
+
+```yaml
+tags:
+  - name: downscale
+    value: 'true'
+  - name: team
+    value: 'qa'
+```
+
+- Set one or many downtimes separated by `,` character.
+
+For instance, during working days scale down instances between 20:00 and 08:00 and during weekend keep them off.
+
+```yaml
+downtime: 'Mon-Fri 20:00-08:00 Europe/Belgrade, Sat-Sun 00:00-24:00 Europe/Belgrade'
+```
+
+Try it, play with it, adapt to your need.
 
 ---
 
@@ -71,10 +88,10 @@ aws-downscaler.yaml                 # Configuration file
 
 ## ⚙️ Prerequisites
 
-* Go (>= 1.24 recommended)
-* AWS CLI installed
-* VS Code (for debugging)
-* Dev Container (recommended setup)
+- Go (>= 1.24 recommended)
+- AWS CLI installed
+- VS Code (for debugging)
+- Dev Container (recommended setup)
 
 ---
 
@@ -133,9 +150,9 @@ go run ./cmd/aws-downscaler
 
 1. Ensure:
 
-   * Dev container is running
-   * AWS is authenticated
-   * `AWS_PROFILE` is set
+   - Dev container is running
+   - AWS is authenticated
+   - `AWS_PROFILE` is set
 
 2. Press: F5
 
@@ -189,18 +206,18 @@ make build   # Build binary
 
 ## ⚠️ Notes
 
-* Always authenticate with AWS before running/debugging
-* `AWS_PROFILE` must be set (e.g. `dev`)
-* Use `AWS_EC2_METADATA_DISABLED=true` inside containers to avoid hangs
-* Ensure your `config.yaml` is in the project root
+- Always authenticate with AWS before running/debugging
+- `AWS_PROFILE` must be set (e.g. `dev`)
+- Use `AWS_EC2_METADATA_DISABLED=true` inside containers to avoid hangs
+- Ensure your `config.yaml` is in the project root
 
 ---
 
 ## 🚀 Future Improvements
 
-* Cli flags to have more control over the app
-* Dry-run mode for safe testing
-* Metrics/logging integration
-* Support for other AWS services
+- Cli flags to have more control over the app
+- Dry-run mode for safe testing
+- Metrics/logging integration
+- Support for other AWS services
 
 ---
